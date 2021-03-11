@@ -1,10 +1,6 @@
 import React from 'react';
 import { AppBar, createStyles, makeStyles, Theme, Toolbar, Typography } from '@material-ui/core';
-import { navigate } from "@reach/router";
-
-const handleTitleClick = () => {
-  navigate("/");
-}
+import { Link } from "@reach/router";
 
 const Header = () => {
   const classes = useStyles();
@@ -12,9 +8,11 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-          <Typography onClick={handleTitleClick} variant="h6" className={classes.title}>
+        <Typography variant="h6" className={classes.title}>
+          <Link to="/" className={classes.link}>
             Honour Our Veterans Banner Map
-          </Typography>
+          </Link>
+        </Typography>
       </Toolbar>
     </AppBar>
   );
@@ -23,8 +21,11 @@ const Header = () => {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
-      flexGrow: 1,
-      cursor: "pointer"
+      flexGrow: 1
+    },
+    link: {
+      color: "#FFFFFF",
+      textDecoration: "none"
     }
   })
 );
