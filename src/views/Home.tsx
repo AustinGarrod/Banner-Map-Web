@@ -1,7 +1,9 @@
 import React from 'react';
 import { RouteComponentProps } from '@reach/router';
 
-// Define props
+// Import components
+import Map from '../components/Map'
+
 interface Props extends RouteComponentProps
 {
 
@@ -10,7 +12,7 @@ interface Props extends RouteComponentProps
 function Home({}:Props) {
   return (
     <div>
-      Home!
+      <Map />
     </div>
   );
 }
