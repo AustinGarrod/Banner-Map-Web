@@ -31,7 +31,11 @@ function App() {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     mainContainer: {
-      paddingTop: STYLES.padding
+      position: "absolute",
+      top: STYLES.padding + STYLES.headerHeight,
+      left: 0,
+      bottom: 0,
+      right: 0,
     }
   })
 );
