@@ -1,5 +1,5 @@
 const STYLES = {
-  padding: 24,
+  spacing: 24,
   headerHeight: 64
 }
 

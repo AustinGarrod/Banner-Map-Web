@@ -1,10 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from '@reach/router';
 
-// Define props
-interface Props extends RouteComponentProps{}
-
-function Details({}:Props) {
+function Details(props: RouteComponentProps) {
   return (
     <div>
       Details

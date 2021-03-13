@@ -8,7 +8,7 @@ const Header = () => {
   return (
     <AppBar position="static">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
+        <Typography variant="h6" className={classes.title} noWrap>
           <Link to="/" className={classes.link}>
             Honour Our Veterans Banner Map
           </Link>
