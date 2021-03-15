@@ -48,6 +48,7 @@ function Home(props: RouteComponentProps) {
             zoom={SETTINGS.FULL_MAP_ZOOM}
             minZoom={SETTINGS.MAP_MIN_ZOOM}
             markers={banners.map(banner => ({position: [banner.lat, banner.long], text: banner.bannerName}))}
+            centerOnMarkers
           />
         </Grid>
         <Grid className={classes.tableGridArea} item lg={6} xs={12}>

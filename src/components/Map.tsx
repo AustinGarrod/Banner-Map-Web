@@ -1,7 +1,7 @@
-import React from 'react';
-import { TileLayer, Popup, MapContainer } from 'react-leaflet';
+import React, { useState } from 'react';
+import { TileLayer, MapContainer, } from 'react-leaflet';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
-import { LatLngTuple } from 'leaflet';
+import { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 
 import '../styles/map.css';
 
@@ -16,15 +16,28 @@ interface Props
   center: LatLngTuple,
   zoom: number,
   minZoom: number,
-  markers?: Marker[]
+  markers?: Marker[],
+  centerOnMarkers?: boolean
 }
 
 function Map(props: Props) {
-  const { center, zoom, minZoom, markers } = props;
+  const { center, zoom, minZoom, markers, centerOnMarkers } = props;
+  const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();
 
+  if (markers?.length && map && centerOnMarkers) {
+    const bounds = new LatLngBounds(markers?.map(marker => marker.position));
+    map.fitBounds(bounds);
+  }
+
   return (
-    <MapContainer className={classes.map} center={center} zoom={zoom} minZoom={minZoom}>
+    <MapContainer 
+      className={classes.map} 
+      center={center} 
+      zoom={zoom} 
+      minZoom={minZoom}
+      whenCreated={setMap}
+    >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

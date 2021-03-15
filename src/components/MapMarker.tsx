@@ -1,6 +1,5 @@
 import React from 'react';
-import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
-import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import { Marker, Popup } from 'react-leaflet';
 import { LatLngTuple } from 'leaflet';
 
 interface Props
