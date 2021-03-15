@@ -21,11 +21,7 @@ function Home(props: RouteComponentProps) {
   useEffect(()=>{
     // Get banners from API
 
-    fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`, {
-      headers: {
-        "Authorization": `Bearer ${SETTINGS.API_KEY}`
-      }
-    })
+    fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`)
     .then(response => {
       if (response.status !== 200) return Promise.reject(response.body);
       return Promise.resolve(response);
