@@ -1,7 +1,13 @@
 import React from 'react';
-import { TileLayer, Marker, Popup, MapContainer } from 'react-leaflet';
+import { TileLayer, Popup, MapContainer } from 'react-leaflet';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 import { LatLngTuple } from 'leaflet';
+
+import '../styles/map.css';
+
+import MapMarker from './MapMarker'
+
+import Marker from '../typescript/Marker';
 
 interface Props
 {
@@ -9,11 +15,12 @@ interface Props
   height: string,
   center: LatLngTuple,
   zoom: number,
-  minZoom: number
+  minZoom: number,
+  markers?: Marker[]
 }
 
 function Map(props: Props) {
-  const { center, zoom, minZoom } = props;
+  const { center, zoom, minZoom, markers } = props;
   const classes = useStyles(props)();
 
   return (
@@ -22,11 +29,10 @@ function Map(props: Props) {
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
-      <Marker position={[51.505, -0.09]}>
-        <Popup>
-          A pretty CSS3 popup. <br /> Easily customizable.
-        </Popup>
-      </Marker>
+      {
+        markers?.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} text={marker.text} />)
+      }
+      
     </MapContainer>
   );
 }

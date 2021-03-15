@@ -5,11 +5,11 @@ import { LatLngTuple } from 'leaflet';
 
 interface Props
 {
-  position: LatLngTuplet,
+  position: LatLngTuple,
   text: string
 }
 
-function Map({position, text}: Props) {
+function MapMarker({position, text}: Props) {
   return (
     <Marker position={position}>
       <Popup>
@@ -19,4 +19,4 @@ function Map({position, text}: Props) {
   );
 }
 
-export default Map;
+export default MapMarker;

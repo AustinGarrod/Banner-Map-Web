@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
 
@@ -12,8 +12,11 @@ import Map from '../components/Map'
 import STYLES from '../config/styles';
 import SETTINGS from '../config/settings';
 
+import Banner from '../typescript/Banner';
+
 function Home(props: RouteComponentProps) {
   const classes = useStyles();
+  const [banners, setBanners] = useState<Banner[]>([]);
 
   useEffect(()=>{
     // Get banners from API
@@ -29,8 +32,7 @@ function Home(props: RouteComponentProps) {
     })
     .then(response => response.json())
     .then(data => {
-
-      console.log(data);
+      setBanners(data);
     })
     .catch(error => { console.log("Failed to load banners", error) });
   }, [])
@@ -39,11 +41,14 @@ function Home(props: RouteComponentProps) {
     <div className={classes.screenContainer}>
       <Grid container>
         <Grid className={classes.mapGridArea} item lg={6} xs={12}>
-          <Map width="100%" 
+          <Map 
+            width="100%" 
             height="100%" 
             center={SETTINGS.MAP_CENTER}
             zoom={SETTINGS.FULL_MAP_ZOOM}
-            minZoom={SETTINGS.MAP_MIN_ZOOM}/>
+            minZoom={SETTINGS.MAP_MIN_ZOOM}
+            markers={banners.map(banner => ({position: [banner.lat, banner.long], text: banner.bannerName}))}
+          />
         </Grid>
         <Grid className={classes.tableGridArea} item lg={6} xs={12}>
           Table Area
