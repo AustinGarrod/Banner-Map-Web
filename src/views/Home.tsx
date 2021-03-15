@@ -73,7 +73,7 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     tableGridArea: {
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.down('xl')]: {
         paddingLeft: STYLES.spacing,
         paddingTop: 0
       },
