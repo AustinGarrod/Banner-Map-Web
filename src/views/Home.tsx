@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
 
@@ -14,6 +14,26 @@ import SETTINGS from '../config/settings';
 
 function Home(props: RouteComponentProps) {
   const classes = useStyles();
+
+  useEffect(()=>{
+    // Get banners from API
+
+    fetch(`${SETTINGS.API_DOMAIN}/api/banner/all`, {
+      headers: {
+        "Authorization": `Bearer ${SETTINGS.API_KEY}`
+      }
+    })
+    .then(response => {
+      if (response.status !== 200) return Promise.reject(response.body);
+      return Promise.resolve(response);
+    })
+    .then(response => response.json())
+    .then(data => {
+
+      console.log(data);
+    })
+    .catch(error => { console.log("Failed to load banners", error) });
+  }, [])
 
   return (
     <div className={classes.screenContainer}>
