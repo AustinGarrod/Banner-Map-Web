@@ -21,7 +21,7 @@ function Home(props: RouteComponentProps) {
   useEffect(()=>{
     // Get banners from API
 
-    fetch(`${SETTINGS.API_DOMAIN}/api/banner/all`, {
+    fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`, {
       headers: {
         "Authorization": `Bearer ${SETTINGS.API_KEY}`
       }
