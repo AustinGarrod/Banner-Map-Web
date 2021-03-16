@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Grid, Tab } from '@material-ui/core';
 
 // Import styles
-import '../styles/home.css'
+import '../styles/home.css';
 
 // Import components
-import Map from '../components/Map'
+import Map from '../components/Map';
+import Table from '../components/Table';
 
 // Import configurations
 import STYLES from '../config/styles';
 import SETTINGS from '../config/settings';
 
 import Banner from '../typescript/Banner';
+
+const tableColumns = [
+  { field: 'bannerName', headerName: 'Name', flex: 1 },
+  { field: 'era', headerName: 'Era of Service', flex: 1 },
+  { field: 'branch', headerName: 'Branch', flex: 1 },
+  { field: 'sponsor', headerName: 'Sponsor', flex: 1 },
+];
 
 function Home(props: RouteComponentProps) {
   const classes = useStyles();
@@ -48,7 +56,7 @@ function Home(props: RouteComponentProps) {
           />
         </Grid>
         <Grid className={classes.tableGridArea} item lg={6} xs={12}>
-          Table Area
+          <Table columns={tableColumns} data={banners.map(banner => ({ ...banner, ...{"id": banner._id} }) )} pageSize={5} />
         </Grid>
       </Grid>
     </div>
@@ -67,7 +75,7 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1
     },
     mapGridArea: {
-      [theme.breakpoints.down('lg')]: {
+      [theme.breakpoints.down('xl')]: {
         height: "100%"
       },
       [theme.breakpoints.down('md')]: {
@@ -77,11 +85,13 @@ const useStyles = makeStyles((theme: Theme) =>
     tableGridArea: {
       [theme.breakpoints.down('xl')]: {
         paddingLeft: STYLES.spacing,
-        paddingTop: 0
+        paddingTop: 0,
+        height: "100%"
       },
       [theme.breakpoints.down('md')]: {
         paddingTop: STYLES.spacing,
-        paddingLeft: 0
+        paddingLeft: 0,
+        height: "50%"
       },
     }
   })

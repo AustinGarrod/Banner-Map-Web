@@ -1,4 +1,5 @@
 export default interface Banner {
+  _id: string; 
   number: number;
   poll: string;
   edition: number;
