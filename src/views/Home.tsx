@@ -15,6 +15,8 @@ import SETTINGS from '../config/settings';
 
 // Import typescript modules
 import Banner from '../typescript/Banner';
+import Pole from '../typescript/Pole';
+import Marker from '../typescript/Marker';
 
 // Define columns for table
 const tableColumns = [
@@ -24,11 +26,55 @@ const tableColumns = [
   { field: 'sponsor', headerName: 'Sponsor', flex: 1 },
 ];
 
+// Creates a location ID string from banner lat and long
+const makeBannerLocationId = (banner: Banner): string => `${banner.lat}${banner.long}`;
 
+// Creates a Record of Poles from an array of banners
+const getPolesFromBanners = (banners: Banner[]): Record<string, Pole> => {
+  let poles: Record<string, Pole> = {};
+
+  banners.forEach(banner => {
+    const bannerId: string = makeBannerLocationId(banner);
+    if (bannerId in poles) {
+      // Location already exists, append banner
+      poles[bannerId].banners.push(banner);
+    } else {
+      // Create new location
+      poles[bannerId] = {
+        location: [ banner.lat, banner.long ],
+        banners: [ banner ]
+      }
+    }
+  });
+
+  return poles;
+}
+
+// Creates an array of Markers from a Record of Poles
+const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
+  let markers: Marker[] = [];
+
+  for (let key in poles) {
+    let marker: Marker = {
+      position: poles[key].location,
+      text: ""
+    }
+    poles[key].banners.forEach((banner: Banner) => {
+      marker.text += banner.bannerName + " ";
+    });
+
+    marker.text = marker.text.trim();
+    
+    markers.push(marker);
+  }
+
+  return markers;
+}
 
 const Home = (props: RouteComponentProps) => {
   const classes = useStyles();
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [poles, setPoles] = useState<Record<string, Pole>>();
 
   useEffect(()=>{
     // Get banners from API
@@ -40,6 +86,7 @@ const Home = (props: RouteComponentProps) => {
     })
     .then(response => response.json())
     .then(data => {
+      setPoles(getPolesFromBanners(data));
       setBanners(data);
     })
     .catch(error => { console.log("Failed to load banners", error) });
@@ -55,7 +102,7 @@ const Home = (props: RouteComponentProps) => {
             center={SETTINGS.MAP_CENTER}
             zoom={SETTINGS.FULL_MAP_ZOOM}
             minZoom={SETTINGS.MAP_MIN_ZOOM}
-            markers={banners.map(banner => ({position: [banner.lat, banner.long], text: banner.bannerName}))}
+            markers={poles ? getMarkersFromPoles(poles) : []}
             centerOnMarkers
           />
         </Grid>
