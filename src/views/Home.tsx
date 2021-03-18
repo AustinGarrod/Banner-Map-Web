@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
-import { makeStyles, Theme, createStyles, Grid, Tab } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
 
 // Import styles
 import '../styles/home.css';
@@ -13,8 +13,10 @@ import Table from '../components/Table';
 import STYLES from '../config/styles';
 import SETTINGS from '../config/settings';
 
+// Import typescript modules
 import Banner from '../typescript/Banner';
 
+// Define columns for table
 const tableColumns = [
   { field: 'bannerName', headerName: 'Name', flex: 1 },
   { field: 'era', headerName: 'Era of Service', flex: 1 },
@@ -22,7 +24,9 @@ const tableColumns = [
   { field: 'sponsor', headerName: 'Sponsor', flex: 1 },
 ];
 
-function Home(props: RouteComponentProps) {
+
+
+const Home = (props: RouteComponentProps) => {
   const classes = useStyles();
   const [banners, setBanners] = useState<Banner[]>([]);
 
