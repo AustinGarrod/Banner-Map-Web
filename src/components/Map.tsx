@@ -12,12 +12,17 @@ import MapMarker from './MapMarker'
 // Import typescript modules
 import Marker from '../typescript/Marker';
 
+const centerMapOnMarkers = (map: LeafletMap, markers: Marker[]) => {
+  const bounds = new LatLngBounds(markers?.map(marker => marker.position));
+  map.fitBounds(bounds);
+}
+
 interface Props
 {
   width: string,
   height: string,
   center: LatLngTuple,
-  zoom: number,
+  zoom?: number,
   minZoom: number,
   markers?: Marker[],
   centerOnMarkers?: boolean
@@ -29,8 +34,10 @@ const Map = (props: Props) => {
   const classes = useStyles(props)();
 
   if (markers?.length && map && centerOnMarkers) {
-    const bounds = new LatLngBounds(markers?.map(marker => marker.position));
-    map.fitBounds(bounds);
+    window.addEventListener("resize", () => {
+      centerMapOnMarkers(map, markers);
+    })
+    centerMapOnMarkers(map, markers);
   }
 
   return (
