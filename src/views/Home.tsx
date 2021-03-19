@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
+import { Map as LeafletMap } from 'leaflet';
 import Fuse from 'fuse.js';
 
 // Import styles
@@ -68,13 +69,16 @@ const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
 
 const Home = (props: RouteComponentProps) => {
   const classes = useStyles();
+
   const [banners, setBanners] = useState<Banner[]>([]);
   const [filteredBanners, setFilteredBanners] = useState<Banner[]>([]);
   const [poles, setPoles] = useState<Record<string, Pole>>();
   const [filteredPoles, setFilteredPoles] = useState<Record<string, Pole>>();
+  const [map, setMap] = useState<LeafletMap>();
 
   // Handles changing of search text
   const onSearchChange = (searchText: string) => {
+    map?.closePopup();
     if (searchText === "") {
       setFilteredBanners(banners);
       setFilteredPoles(poles);
@@ -119,6 +123,7 @@ const Home = (props: RouteComponentProps) => {
             zoom={SETTINGS.FULL_MAP_ZOOM}
             minZoom={SETTINGS.MAP_MIN_ZOOM}
             markers={filteredPoles ? getMarkersFromPoles(filteredPoles) : []}
+            passMapToParent={setMap}
             centerOnMarkers
           />
         </Grid>

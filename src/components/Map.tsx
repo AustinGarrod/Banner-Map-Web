@@ -25,11 +25,12 @@ interface Props
   zoom?: number,
   minZoom: number,
   markers?: Marker[],
-  centerOnMarkers?: boolean
+  centerOnMarkers?: boolean,
+  passMapToParent: Function
 }
 
 const Map = (props: Props) => {
-  const { center, zoom, minZoom, markers, centerOnMarkers } = props;
+  const { center, zoom, minZoom, markers, centerOnMarkers, passMapToParent } = props;
   const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();
 
@@ -40,13 +41,18 @@ const Map = (props: Props) => {
     centerMapOnMarkers(map, markers);
   }
 
+  const updateMap = (mapInstance: LeafletMap) => {
+    setMap(mapInstance);
+    passMapToParent(mapInstance);
+  }
+
   return (
     <MapContainer 
       className={classes.map} 
       center={center} 
       zoom={zoom} 
       minZoom={minZoom}
-      whenCreated={setMap}
+      whenCreated={updateMap}
       zoomSnap={0.8}
     >
       <TileLayer
