@@ -3,10 +3,13 @@ import { TileLayer, MapContainer, } from 'react-leaflet';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 import { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 
+// Import styles
 import '../styles/map.css';
 
+// Import custom components
 import MapMarker from './MapMarker'
 
+// Import typescript modules
 import Marker from '../typescript/Marker';
 
 interface Props
@@ -43,7 +46,7 @@ function Map(props: Props) {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {
-        markers?.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} text={marker.text} />)
+        markers?.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} banners={marker.banners} />)
       }
       
     </MapContainer>

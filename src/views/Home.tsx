@@ -57,14 +57,8 @@ const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
   for (let key in poles) {
     let marker: Marker = {
       position: poles[key].location,
-      text: ""
+      banners: poles[key].banners
     }
-    poles[key].banners.forEach((banner: Banner) => {
-      marker.text += banner.bannerName + " ";
-    });
-
-    marker.text = marker.text.trim();
-    
     markers.push(marker);
   }
 

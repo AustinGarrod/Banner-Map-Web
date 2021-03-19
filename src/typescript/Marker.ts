@@ -1,6 +1,7 @@
 import { LatLngTuple } from "leaflet";
+import Banner from "./Banner";
 
 export default interface Marker {
   position: LatLngTuple,
-  text: string
+  banners: Banner[]
 }
