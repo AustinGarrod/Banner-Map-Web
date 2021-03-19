@@ -19,8 +19,8 @@ const generateContainerRows = (banners: Banner[]):React.ReactElement[] => {
   let containerRows: React.ReactElement[] = [];
 
   banners.forEach((banner, index) => {
-    containerRows.push(<PopupDataContainer key={index} banner={banner} />);
-    if (banners[index + 1]) containerRows.push(<Divider />);
+    containerRows.push(<PopupDataContainer key={`popup_${index}`} banner={banner} />);
+    if (banners[index + 1]) containerRows.push(<Divider key={`divider_${index}`} />);
   });
 
   return containerRows;

@@ -21,8 +21,8 @@ const Table = ({ columns, data, pageSize }: Props) => {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     tableContainer: {
-      height: "100%",
-      width: "100%"
+      width: "100%",
+      flex: 1,
     }
   })
 );

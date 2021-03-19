@@ -47,6 +47,7 @@ const Map = (props: Props) => {
       zoom={zoom} 
       minZoom={minZoom}
       whenCreated={setMap}
+      zoomSnap={0.8}
     >
       <TileLayer
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

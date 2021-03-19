@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
+import Fuse from 'fuse.js';
 
 // Import styles
 import '../styles/home.css';
@@ -8,6 +9,7 @@ import '../styles/home.css';
 // Import components
 import Map from '../components/Map';
 import Table from '../components/Table';
+import SearchBar from '../components/SearchBar';
 
 // Import configurations
 import STYLES from '../config/styles';
@@ -22,8 +24,7 @@ import Marker from '../typescript/Marker';
 const tableColumns = [
   { field: 'bannerName', headerName: 'Name', flex: 1 },
   { field: 'era', headerName: 'Era of Service', flex: 1 },
-  { field: 'branch', headerName: 'Branch', flex: 1 },
-  { field: 'sponsor', headerName: 'Sponsor', flex: 1 },
+  { field: 'branch', headerName: 'Branch', flex: 1 }
 ];
 
 // Creates a location ID string from banner lat and long
@@ -68,11 +69,29 @@ const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
 const Home = (props: RouteComponentProps) => {
   const classes = useStyles();
   const [banners, setBanners] = useState<Banner[]>([]);
+  const [filteredBanners, setFilteredBanners] = useState<Banner[]>([]);
   const [poles, setPoles] = useState<Record<string, Pole>>();
+  const [filteredPoles, setFilteredPoles] = useState<Record<string, Pole>>();
+
+  // Handles changing of search text
+  const onSearchChange = (searchText: string) => {
+    if (searchText === "") {
+      setFilteredBanners(banners);
+      setFilteredPoles(poles);
+    } else {
+      const fuse = new Fuse(banners, {
+        keys: ['lastName', 'firstName', 'bannerName', 'era', 'branch', 'sponsor'],
+        threshold: 0.1,
+        findAllMatches: true,
+      });
+      const results = fuse.search(searchText).map(result => result.item);
+      setFilteredBanners(results);
+      setFilteredPoles(getPolesFromBanners(results));
+    }
+  }
 
   useEffect(()=>{
     // Get banners from API
-
     fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`)
     .then(response => {
       if (response.status !== 200) return Promise.reject(response.body);
@@ -81,7 +100,10 @@ const Home = (props: RouteComponentProps) => {
     .then(response => response.json())
     .then(data => {
       setPoles(getPolesFromBanners(data));
+      setFilteredPoles(getPolesFromBanners(data));
+
       setBanners(data);
+      setFilteredBanners(data);
     })
     .catch(error => { console.log("Failed to load banners", error) });
   }, [])
@@ -89,19 +111,20 @@ const Home = (props: RouteComponentProps) => {
   return (
     <div className={classes.screenContainer}>
       <Grid container>
-        <Grid className={classes.mapGridArea} item lg={6} xs={12}>
+        <Grid className={classes.mapGridArea} item md={6} xs={12}>
           <Map 
             width="100%" 
             height="100%" 
             center={SETTINGS.MAP_CENTER}
             zoom={SETTINGS.FULL_MAP_ZOOM}
             minZoom={SETTINGS.MAP_MIN_ZOOM}
-            markers={poles ? getMarkersFromPoles(poles) : []}
+            markers={filteredPoles ? getMarkersFromPoles(filteredPoles) : []}
             centerOnMarkers
           />
         </Grid>
-        <Grid className={classes.tableGridArea} item lg={6} xs={12}>
-          <Table columns={tableColumns} data={banners.map(banner => ({ ...banner, ...{"id": banner._id} }) )} pageSize={5} />
+        <Grid className={classes.tableGridArea} item md={6} xs={12}>
+          <SearchBar onTextChange={onSearchChange} />
+          <Table columns={tableColumns} data={filteredBanners.map(banner => ({ ...banner, ...{"id": banner._id} }) )} pageSize={5} />
         </Grid>
       </Grid>
     </div>
@@ -120,23 +143,25 @@ const useStyles = makeStyles((theme: Theme) =>
       flexGrow: 1
     },
     mapGridArea: {
-      [theme.breakpoints.down('xl')]: {
+      [theme.breakpoints.down(STYLES.largeBreakpoint)]: {
         height: "100%"
       },
-      [theme.breakpoints.down('md')]: {
-        height: "50%"
+      [theme.breakpoints.down(STYLES.smallBreakpoint)]: {
+        height: "35%"
       },
     },
     tableGridArea: {
-      [theme.breakpoints.down('xl')]: {
+      display: "flex",
+      flexDirection: "column",
+      [theme.breakpoints.down(STYLES.largeBreakpoint)]: {
         paddingLeft: STYLES.spacing,
         paddingTop: 0,
         height: "100%"
       },
-      [theme.breakpoints.down('md')]: {
+      [theme.breakpoints.down(STYLES.smallBreakpoint)]: {
         paddingTop: STYLES.spacing,
         paddingLeft: 0,
-        height: "50%"
+        height: "65%"
       },
     }
   })
