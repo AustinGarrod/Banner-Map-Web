@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 // Import typescript modules
-import Banner from '../typescript/Banner';
+import Banner from '../../typescript/Banner';
 
 // Import custom components
 import PopupDataRow from './PopupDataRow';

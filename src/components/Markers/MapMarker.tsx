@@ -4,7 +4,7 @@ import { LatLngTuple } from 'leaflet';
 import { makeStyles, Theme, createStyles, Divider } from '@material-ui/core';
 
 // Import typescript modules
-import Banner from '../typescript/Banner';
+import Banner from '../../typescript/Banner';
 
 // Import custom components
 import PopupDataContainer from './PopupDataContainer';

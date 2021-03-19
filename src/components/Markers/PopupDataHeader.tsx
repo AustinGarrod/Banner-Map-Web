@@ -2,7 +2,7 @@ import React from 'react';
 import { makeStyles, Theme, createStyles, Typography } from '@material-ui/core';
 
 // Import configs
-import STYLES from '../config/styles';
+import STYLES from '../../config/styles';
 
 interface Props
 {

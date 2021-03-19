@@ -7,7 +7,7 @@ import { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 import '../styles/map.css';
 
 // Import custom components
-import MapMarker from './MapMarker'
+import MapMarker from './Markers/MapMarker'
 
 // Import typescript modules
 import Marker from '../typescript/Marker';
