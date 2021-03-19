@@ -11,7 +11,12 @@ const Table = ({ onTextChange }: Props) => {
 
   return (
     <Paper className={classes.container}>
-      <TextField onChange={(event) => { onTextChange(event.target.value) }} size="small" fullWidth label="Search" variant="outlined" className={classes.searchbox} />
+      <TextField onChange={(event) => { onTextChange(event.target.value) }} 
+        size="small" 
+        fullWidth 
+        placeholder="Search" 
+        variant="outlined" 
+        className={classes.searchbox} />
     </Paper>
   );
 }

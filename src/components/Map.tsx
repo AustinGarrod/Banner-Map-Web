@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TileLayer, MapContainer, } from 'react-leaflet';
+import { TileLayer, MapContainer } from 'react-leaflet';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 import { LatLngBounds, LatLngTuple, Map as LeafletMap } from 'leaflet';
 

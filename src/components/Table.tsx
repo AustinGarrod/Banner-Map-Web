@@ -1,6 +1,6 @@
 import React from 'react';
 import { DataGrid, GridColDef, GridSortModel } from '@material-ui/data-grid';
-import { makeStyles, Theme, createStyles } from '@material-ui/core';
+import { makeStyles, Theme, createStyles, Paper } from '@material-ui/core';
 
 interface Props {
   columns: GridColDef[],
@@ -12,9 +12,9 @@ const Table = ({ columns, data, sortModel }: Props) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.tableContainer}>
+    <Paper className={classes.tableContainer}>
       <DataGrid sortModel={sortModel} rows={data} columns={columns} autoPageSize />
-    </div>
+    </Paper>
   );
 }
 

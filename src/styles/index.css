@@ -3,3 +3,9 @@ html, body {
   margin: 0;
   padding: 0;
 }
+
+body {
+  background: #7E9CAE;
+  background: url("../assets/background.jpg") no-repeat center center fixed;
+  background-size: cover;
+}
