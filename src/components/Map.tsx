@@ -23,7 +23,7 @@ interface Props
   centerOnMarkers?: boolean
 }
 
-function Map(props: Props) {
+const Map = (props: Props) => {
   const { center, zoom, minZoom, markers, centerOnMarkers } = props;
   const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();

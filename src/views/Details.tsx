@@ -1,7 +1,7 @@
 import React from 'react';
 import { RouteComponentProps } from '@reach/router';
 
-function Details(props: RouteComponentProps) {
+const Details = (props: RouteComponentProps) => {
   return (
     <div>
       Details

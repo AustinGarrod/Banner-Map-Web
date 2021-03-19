@@ -1,13 +1,16 @@
 import React from 'react';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
+// Import configs
+import STYLES from '../config/styles';
+
 interface Props
 {
   title: string,
   value: string
 }
 
-function PopupDataContainer({title, value}: Props) {
+const PopupDataRow = ({title, value}: Props) => {
   const classes = useStyles();
   
   return (
@@ -27,10 +30,11 @@ const useStyles = makeStyles((theme: Theme) =>
     row: {
       display: "flex",
       flexDirection: "row",
-      width: 200
+      width: STYLES.popupRowWidth
     },
     title: {
-      flex: 2
+      flex: 3,
+      fontWeight: 600
     },
     value: {
       flex: 6
@@ -38,4 +42,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default PopupDataContainer;
+export default PopupDataRow;

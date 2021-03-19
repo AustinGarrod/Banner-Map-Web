@@ -6,18 +6,21 @@ import Banner from '../typescript/Banner';
 
 // Import custom components
 import PopupDataRow from './PopupDataRow';
+import PopupDataHeader from './PopupDataHeader';
 
 interface Props
 {
   banner: Banner
 }
 
-function PopupDataContainer({banner}: Props) {
+const PopupDataContainer = ({banner}: Props) => {
   const classes = useStyles();
   
   return (
     <div className={classes.container}>
-      <PopupDataRow title={"Name"} value={banner.bannerName} />
+      <PopupDataHeader value={banner.bannerName} />
+      <PopupDataRow title={"Branch"} value={banner.branch} />
+      <PopupDataRow title={"Era"} value={banner.era} />
     </div>
   );
 }
@@ -25,6 +28,8 @@ function PopupDataContainer({banner}: Props) {
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
+      marginTop: 10,
+      marginBottom: 10
     }
   })
 );
