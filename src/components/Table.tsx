@@ -1,19 +1,19 @@
 import React from 'react';
-import { DataGrid, GridColDef } from '@material-ui/data-grid';
+import { DataGrid, GridColDef, GridSortModel } from '@material-ui/data-grid';
 import { makeStyles, Theme, createStyles } from '@material-ui/core';
 
 interface Props {
   columns: GridColDef[],
   data: object[],
-  pageSize: number,
+  sortModel: GridSortModel
 }
 
-const Table = ({ columns, data, pageSize }: Props) => {
+const Table = ({ columns, data, sortModel }: Props) => {
   const classes = useStyles();
 
   return (
     <div className={classes.tableContainer}>
-      <DataGrid rows={data} columns={columns} autoPageSize />
+      <DataGrid sortModel={sortModel} rows={data} columns={columns} autoPageSize />
     </div>
   );
 }

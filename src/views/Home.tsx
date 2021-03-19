@@ -124,7 +124,14 @@ const Home = (props: RouteComponentProps) => {
         </Grid>
         <Grid className={classes.tableGridArea} item md={6} xs={12}>
           <SearchBar onTextChange={onSearchChange} />
-          <Table columns={tableColumns} data={filteredBanners.map(banner => ({ ...banner, ...{"id": banner._id} }) )} pageSize={5} />
+          <Table columns={tableColumns} 
+            data={filteredBanners.map(banner => ({ ...banner, ...{"id": banner._id} }) )}
+            sortModel={[
+              {
+                field: 'bannerName',
+                sort: 'asc',
+              },
+            ]}/>
         </Grid>
       </Grid>
     </div>
