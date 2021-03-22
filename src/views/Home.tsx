@@ -107,6 +107,13 @@ const Home = (props: RouteComponentProps) => {
     map?.flyTo(location);
   }
 
+  const onRowClick = (banner: Banner) => {
+    if (poles) {
+      const pole = poles[makeBannerLocationId(banner)];
+      setPopupToDisplay(pole.location, pole.banners);
+    }
+  }
+
   useEffect(()=>{
     // Get banners from API
     fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`)
@@ -155,7 +162,9 @@ const Home = (props: RouteComponentProps) => {
                 field: 'bannerName',
                 sort: 'asc',
               },
-            ]}/>
+            ]}
+            onRowClick={onRowClick}
+            />
         </Grid>
       </Grid>
     </div>

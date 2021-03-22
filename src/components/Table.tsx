@@ -5,15 +5,22 @@ import { makeStyles, Theme, createStyles, Paper } from '@material-ui/core';
 interface Props {
   columns: GridColDef[],
   data: object[],
-  sortModel: GridSortModel
+  sortModel: GridSortModel,
+  onRowClick: Function
 }
 
-const Table = ({ columns, data, sortModel }: Props) => {
+const Table = ({ columns, data, sortModel, onRowClick }: Props) => {
   const classes = useStyles();
 
   return (
     <Paper className={classes.tableContainer}>
-      <DataGrid sortModel={sortModel} rows={data} columns={columns} autoPageSize />
+      <DataGrid 
+        sortModel={sortModel} 
+        rows={data} 
+        columns={columns} 
+        autoPageSize 
+        onRowClick={e => { onRowClick(e.row) }}
+        />
     </Paper>
   );
 }
