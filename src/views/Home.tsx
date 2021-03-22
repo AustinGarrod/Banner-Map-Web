@@ -77,12 +77,12 @@ const Home = (props: RouteComponentProps) => {
   const [map, setMap] = useState<LeafletMap>();
   const [popupPosition, setPopupPosition] = useState<LatLngTuple>([0,0]);
   const [popupBanners, setPopupBanners] = useState<Banner[]>([]);
-  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
-  const [centerMapOnMarkers, setCenterMapOnMarkers] = useState<boolean>(false);
+  const [shouldPopupDisplay, setShouldPopupDisplay] = useState<boolean>(false);
+  const [shouldMapCenterOnMarkers, setShouldMapCenterOnMarkers] = useState<boolean>(false);
 
   // Handles changing of search text
   const onSearchChange = (searchText: string) => {
-    setCenterMapOnMarkers(true);
+    setShouldMapCenterOnMarkers(true);
     map?.closePopup();
     if (searchText === "") {
       setFilteredBanners(banners);
@@ -100,10 +100,10 @@ const Home = (props: RouteComponentProps) => {
   }
 
   const setPopupToDisplay = (position: LatLngTuple, banners: Banner[]) => {
-    setCenterMapOnMarkers(false);
+    setShouldMapCenterOnMarkers(false);
     setPopupPosition(position);
     setPopupBanners(banners);
-    setDisplayPopup(true);
+    setShouldPopupDisplay(true);
     map?.flyTo(position);
   }
 
@@ -128,7 +128,7 @@ const Home = (props: RouteComponentProps) => {
 
       setBanners(data);
       setFilteredBanners(data);
-      setCenterMapOnMarkers(true);
+      setShouldMapCenterOnMarkers(true);
     })
     .catch(error => { console.log("Failed to load banners", error) });
   }, [])
@@ -145,12 +145,12 @@ const Home = (props: RouteComponentProps) => {
             minZoom={SETTINGS.MAP_MIN_ZOOM}
             markers={filteredPoles ? getMarkersFromPoles(filteredPoles) : []}
             passMapToParent={setMap}
-            centerOnMarkers={centerMapOnMarkers}
+            centerOnMarkers={shouldMapCenterOnMarkers}
             popupBanners={popupBanners}
             popupPosition={popupPosition}
-            displayPopup={displayPopup}
+            shouldPopupDisplay={shouldPopupDisplay}
             setPopupToDisplay={setPopupToDisplay}
-            setDisplayPopup={setDisplayPopup}
+            setShouldPopupDisplay={setShouldPopupDisplay}
           />
         </Grid>
         <Grid className={classes.tableGridArea} item md={6} xs={12}>

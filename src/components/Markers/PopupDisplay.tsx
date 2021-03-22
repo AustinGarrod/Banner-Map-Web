@@ -13,7 +13,7 @@ interface Props
 {
   position: LatLngTuple,
   banners: Banner[],
-  setDisplayPopup: Function
+  setShouldPopupDisplay: Function
 }
 
 const generateContainerRows = (banners: Banner[]):React.ReactElement[] => {
@@ -27,12 +27,12 @@ const generateContainerRows = (banners: Banner[]):React.ReactElement[] => {
   return containerRows;
 }
 
-const PopupDisplay = ({position, banners, setDisplayPopup}: Props) => {
+const PopupDisplay = ({position, banners, setShouldPopupDisplay}: Props) => {
   const classes = useStyles();
   const containerRows = generateContainerRows(banners);
 
   return (
-    <Popup onClose={() => { setDisplayPopup(false) }} position={position} className={classes.popup}>
+    <Popup onClose={() => { setShouldPopupDisplay(false) }} position={position} className={classes.popup}>
       {
         containerRows
       }
