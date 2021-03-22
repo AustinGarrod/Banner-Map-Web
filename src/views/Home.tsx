@@ -28,22 +28,22 @@ const tableColumns = [
   { field: 'branch', headerName: 'Branch', flex: 1 }
 ];
 
-// Creates a location ID string from banner lat and long
-const makeBannerLocationId = (banner: Banner): string => `${banner.lat}${banner.long}`;
+// Creates a position ID string from banner lat and long
+const createPositionIdFromBanner = (banner: Banner): string => `${banner.lat}${banner.long}`;
 
 // Creates a Record of Poles from an array of banners
 const getPolesFromBanners = (banners: Banner[]): Record<string, Pole> => {
   let poles: Record<string, Pole> = {};
 
   banners.forEach(banner => {
-    const bannerId: string = makeBannerLocationId(banner);
+    const bannerId: string = createPositionIdFromBanner(banner);
     if (bannerId in poles) {
-      // Location already exists, append banner
+      // Position already exists, append banner
       poles[bannerId].banners.push(banner);
     } else {
-      // Create new location
+      // Create new position
       poles[bannerId] = {
-        location: [ banner.lat, banner.long ],
+        position: [ banner.lat, banner.long ],
         banners: [ banner ]
       }
     }
@@ -58,7 +58,7 @@ const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
 
   for (let key in poles) {
     let marker: Marker = {
-      position: poles[key].location,
+      position: poles[key].position,
       banners: poles[key].banners
     }
     markers.push(marker);
@@ -75,7 +75,7 @@ const Home = (props: RouteComponentProps) => {
   const [poles, setPoles] = useState<Record<string, Pole>>();
   const [filteredPoles, setFilteredPoles] = useState<Record<string, Pole>>();
   const [map, setMap] = useState<LeafletMap>();
-  const [popupLocation, setPopupLocation] = useState<LatLngTuple>([0,0]);
+  const [popupPosition, setPopupPosition] = useState<LatLngTuple>([0,0]);
   const [popupBanners, setPopupBanners] = useState<Banner[]>([]);
   const [displayPopup, setDisplayPopup] = useState<boolean>(false);
   const [centerMapOnMarkers, setCenterMapOnMarkers] = useState<boolean>(false);
@@ -99,18 +99,18 @@ const Home = (props: RouteComponentProps) => {
     }
   }
 
-  const setPopupToDisplay = (location: LatLngTuple, banners: Banner[]) => {
+  const setPopupToDisplay = (position: LatLngTuple, banners: Banner[]) => {
     setCenterMapOnMarkers(false);
-    setPopupLocation(location);
+    setPopupPosition(position);
     setPopupBanners(banners);
     setDisplayPopup(true);
-    map?.flyTo(location);
+    map?.flyTo(position);
   }
 
   const onRowClick = (banner: Banner) => {
     if (poles) {
-      const pole = poles[makeBannerLocationId(banner)];
-      setPopupToDisplay(pole.location, pole.banners);
+      const pole = poles[createPositionIdFromBanner(banner)];
+      setPopupToDisplay(pole.position, pole.banners);
     }
   }
 
@@ -147,7 +147,7 @@ const Home = (props: RouteComponentProps) => {
             passMapToParent={setMap}
             centerOnMarkers={centerMapOnMarkers}
             popupBanners={popupBanners}
-            popupLocation={popupLocation}
+            popupPosition={popupPosition}
             displayPopup={displayPopup}
             setPopupToDisplay={setPopupToDisplay}
             setDisplayPopup={setDisplayPopup}

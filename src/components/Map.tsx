@@ -26,7 +26,7 @@ interface Props
   passMapToParent: Function,
   displayPopup: boolean,
   popupBanners: Banner[],
-  popupLocation: LatLngTuple,
+  popupPosition: LatLngTuple,
   setPopupToDisplay: Function,
   setDisplayPopup: Function,
 }
@@ -34,7 +34,7 @@ interface Props
 const Map = (props: Props) => {
   const { center, zoom, minZoom, markers, centerOnMarkers, 
           passMapToParent, displayPopup, popupBanners, 
-          popupLocation, setPopupToDisplay, setDisplayPopup } = props;
+          popupPosition, setPopupToDisplay, setDisplayPopup } = props;
   const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();
 
@@ -72,7 +72,7 @@ const Map = (props: Props) => {
         markers.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} banners={marker.banners} setPopupToDisplay={setPopupToDisplay} />)
       }
       {
-        displayPopup && <PopupDisplay setDisplayPopup={setDisplayPopup} position={popupLocation} banners={popupBanners} />
+        displayPopup && <PopupDisplay setDisplayPopup={setDisplayPopup} position={popupPosition} banners={popupBanners} />
       }
       
     </MapContainer>
