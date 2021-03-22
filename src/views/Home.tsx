@@ -70,6 +70,7 @@ const getMarkersFromPoles = (poles: Record<string, Pole>): Marker[] => {
 const Home = (props: RouteComponentProps) => {
   const classes = useStyles();
 
+  // Create state
   const [banners, setBanners] = useState<Banner[]>([]);
   const [filteredBanners, setFilteredBanners] = useState<Banner[]>([]);
   const [poles, setPoles] = useState<Record<string, Pole>>();
@@ -94,11 +95,19 @@ const Home = (props: RouteComponentProps) => {
         findAllMatches: true,
       });
       const results = fuse.search(searchText).map(result => result.item);
+
       setFilteredBanners(results);
       setFilteredPoles(getPolesFromBanners(results));
+
+      // Display popup if one banner found
+      if (results.length === 1 && poles) {
+        const pole = poles[createPositionIdFromBanner(results[0])];
+        setPopupToDisplay(pole.position, pole.banners);
+      } 
     }
   }
 
+  // Create and display a popup
   const setPopupToDisplay = (position: LatLngTuple, banners: Banner[]) => {
     setShouldMapCenterOnMarkers(false);
     setPopupPosition(position);
@@ -107,6 +116,7 @@ const Home = (props: RouteComponentProps) => {
     map?.flyTo(position);
   }
 
+  // Handles clicking of row in data table
   const onRowClick = (banner: Banner) => {
     if (poles) {
       const pole = poles[createPositionIdFromBanner(banner)];
@@ -114,8 +124,8 @@ const Home = (props: RouteComponentProps) => {
     }
   }
 
+  // When the component is created, call the api
   useEffect(()=>{
-    // Get banners from API
     fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`)
     .then(response => {
       if (response.status !== 200) return Promise.reject(response.body);
