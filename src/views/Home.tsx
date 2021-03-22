@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { RouteComponentProps } from '@reach/router';
 import { makeStyles, Theme, createStyles, Grid } from '@material-ui/core';
-import { Map as LeafletMap } from 'leaflet';
+import { LatLngTuple, Map as LeafletMap } from 'leaflet';
 import Fuse from 'fuse.js';
 
 // Import styles
@@ -75,9 +75,14 @@ const Home = (props: RouteComponentProps) => {
   const [poles, setPoles] = useState<Record<string, Pole>>();
   const [filteredPoles, setFilteredPoles] = useState<Record<string, Pole>>();
   const [map, setMap] = useState<LeafletMap>();
+  const [popupLocation, setPopupLocation] = useState<LatLngTuple>([0,0]);
+  const [popupBanners, setPopupBanners] = useState<Banner[]>([]);
+  const [displayPopup, setDisplayPopup] = useState<boolean>(false);
+  const [centerMapOnMarkers, setCenterMapOnMarkers] = useState<boolean>(false);
 
   // Handles changing of search text
   const onSearchChange = (searchText: string) => {
+    setCenterMapOnMarkers(true);
     map?.closePopup();
     if (searchText === "") {
       setFilteredBanners(banners);
@@ -94,6 +99,14 @@ const Home = (props: RouteComponentProps) => {
     }
   }
 
+  const setPopupToDisplay = (location: LatLngTuple, banners: Banner[]) => {
+    setCenterMapOnMarkers(false);
+    setPopupLocation(location);
+    setPopupBanners(banners);
+    setDisplayPopup(true);
+    map?.flyTo(location);
+  }
+
   useEffect(()=>{
     // Get banners from API
     fetch(`${SETTINGS.API_DOMAIN}/api/banner/active`)
@@ -108,6 +121,7 @@ const Home = (props: RouteComponentProps) => {
 
       setBanners(data);
       setFilteredBanners(data);
+      setCenterMapOnMarkers(true);
     })
     .catch(error => { console.log("Failed to load banners", error) });
   }, [])
@@ -124,7 +138,13 @@ const Home = (props: RouteComponentProps) => {
             minZoom={SETTINGS.MAP_MIN_ZOOM}
             markers={filteredPoles ? getMarkersFromPoles(filteredPoles) : []}
             passMapToParent={setMap}
-            centerOnMarkers
+            centerOnMarkers={centerMapOnMarkers}
+            popupBanners={popupBanners}
+            popupLocation={popupLocation}
+            displayPopup={displayPopup}
+            setPopupToDisplay={setPopupToDisplay}
+            setDisplayPopup={setDisplayPopup}
+            setPopupLocation={setPopupLocation}
           />
         </Grid>
         <Grid className={classes.tableGridArea} item md={6} xs={12}>

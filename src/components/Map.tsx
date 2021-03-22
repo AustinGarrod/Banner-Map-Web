@@ -11,11 +11,8 @@ import MapMarker from './Markers/MapMarker'
 
 // Import typescript modules
 import Marker from '../typescript/Marker';
-
-const centerMapOnMarkers = (map: LeafletMap, markers: Marker[]) => {
-  const bounds = new LatLngBounds(markers?.map(marker => marker.position));
-  map.fitBounds(bounds);
-}
+import PopupDisplay from './Markers/PopupDisplay';
+import Banner from '../typescript/Banner';
 
 interface Props
 {
@@ -24,21 +21,35 @@ interface Props
   center: LatLngTuple,
   zoom?: number,
   minZoom: number,
-  markers?: Marker[],
+  markers: Marker[],
   centerOnMarkers?: boolean,
-  passMapToParent: Function
+  passMapToParent: Function,
+  displayPopup: boolean,
+  popupBanners: Banner[],
+  popupLocation: LatLngTuple,
+  setPopupToDisplay: Function,
+  setDisplayPopup: Function,
+  setPopupLocation: Function
 }
 
 const Map = (props: Props) => {
-  const { center, zoom, minZoom, markers, centerOnMarkers, passMapToParent } = props;
+  const { center, zoom, minZoom, markers, centerOnMarkers, 
+          passMapToParent, displayPopup, popupBanners, 
+          popupLocation, setPopupToDisplay, setDisplayPopup,
+          setPopupLocation } = props;
   const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();
 
-  if (markers?.length && map && centerOnMarkers) {
+  const centerMapOnMarkers = (markers: Marker[]) => {
+    const bounds = new LatLngBounds(markers?.map(marker => marker.position));
+    map?.fitBounds(bounds);
+  }
+
+  if (markers.length && map && centerOnMarkers) {
     window.addEventListener("resize", () => {
-      centerMapOnMarkers(map, markers);
+      centerMapOnMarkers(markers);
     })
-    centerMapOnMarkers(map, markers);
+    centerMapOnMarkers(markers);
   }
 
   const updateMap = (mapInstance: LeafletMap) => {
@@ -60,7 +71,10 @@ const Map = (props: Props) => {
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
       />
       {
-        markers?.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} banners={marker.banners} />)
+        markers.map((marker, index) => <MapMarker key={`marker_${index}`} position={marker.position} banners={marker.banners} setPopupToDisplay={setPopupToDisplay} />)
+      }
+      {
+        displayPopup && <PopupDisplay setDisplayPopup={setDisplayPopup} position={popupLocation} banners={popupBanners} />
       }
       
     </MapContainer>
