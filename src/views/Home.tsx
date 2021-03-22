@@ -144,7 +144,6 @@ const Home = (props: RouteComponentProps) => {
             displayPopup={displayPopup}
             setPopupToDisplay={setPopupToDisplay}
             setDisplayPopup={setDisplayPopup}
-            setPopupLocation={setPopupLocation}
           />
         </Grid>
         <Grid className={classes.tableGridArea} item md={6} xs={12}>

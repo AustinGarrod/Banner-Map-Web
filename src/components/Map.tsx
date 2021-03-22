@@ -29,14 +29,12 @@ interface Props
   popupLocation: LatLngTuple,
   setPopupToDisplay: Function,
   setDisplayPopup: Function,
-  setPopupLocation: Function
 }
 
 const Map = (props: Props) => {
   const { center, zoom, minZoom, markers, centerOnMarkers, 
           passMapToParent, displayPopup, popupBanners, 
-          popupLocation, setPopupToDisplay, setDisplayPopup,
-          setPopupLocation } = props;
+          popupLocation, setPopupToDisplay, setDisplayPopup } = props;
   const [map, setMap] = useState<LeafletMap>();
   const classes = useStyles(props)();
 
