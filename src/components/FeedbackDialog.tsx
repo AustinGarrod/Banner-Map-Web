@@ -1,5 +1,5 @@
 import React from 'react';
-import { makeStyles, Theme, createStyles, Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
+import { Dialog, DialogContent, DialogContentText, DialogTitle } from '@material-ui/core';
 
 interface Props {
   shouldDisplay: boolean,
@@ -8,8 +8,6 @@ interface Props {
 }
 
 const Table = ({ shouldDisplay, text, title }: Props) => {
-  const classes = useStyles();
-
   return (
     <Dialog
       open={shouldDisplay}
@@ -26,13 +24,5 @@ const Table = ({ shouldDisplay, text, title }: Props) => {
       </Dialog>
   );
 }
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    tableContainer: {
-      
-    }
-  })
-);
 
 export default Table;
