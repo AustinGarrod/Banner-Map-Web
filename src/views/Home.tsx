@@ -7,10 +7,15 @@ import Fuse from 'fuse.js';
 // Import styles
 import '../styles/home.css';
 
+// Import assets
+import LoadingPoppy from '../assets/poppy_loader.svg'
+
 // Import components
 import Map from '../components/Map';
 import Table from '../components/Table';
 import SearchBar from '../components/SearchBar';
+import LoadingOverlay from '../components/Loading/LoadingOverlay';
+import FeedbackDialog from '../components/FeedbackDialog';
 
 // Import configurations
 import STYLES from '../config/styles';
@@ -80,6 +85,8 @@ const Home = (props: RouteComponentProps) => {
   const [popupBanners, setPopupBanners] = useState<Banner[]>([]);
   const [shouldPopupDisplay, setShouldPopupDisplay] = useState<boolean>(false);
   const [shouldMapCenterOnMarkers, setShouldMapCenterOnMarkers] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showBannerError, setShowBannerError] = useState<boolean>(false);
 
   // Handles changing of search text
   const onSearchChange = (searchText: string) => {
@@ -139,12 +146,24 @@ const Home = (props: RouteComponentProps) => {
       setBanners(data);
       setFilteredBanners(data);
       setShouldMapCenterOnMarkers(true);
+      setIsLoading(false);
     })
-    .catch(error => { console.log("Failed to load banners", error) });
+    .catch(error => {
+      setIsLoading(false);
+      setShowBannerError(true);
+    });
   }, [])
 
   return (
     <div className={classes.screenContainer}>
+      {
+        isLoading && <LoadingOverlay icon={LoadingPoppy} 
+                        text="Loading banners..." 
+                        subtext="This may take a moment" />
+      }
+      <FeedbackDialog shouldDisplay={showBannerError}
+        title="Failed to load banners"
+        text={`Looks like we failed to load the data we need, sorry about that! \n Check back again later, hopefully we will have this fixed`} />
       <Grid container>
         <Grid className={classes.mapGridArea} item md={6} xs={12}>
           <Map 
@@ -173,8 +192,7 @@ const Home = (props: RouteComponentProps) => {
                 sort: 'asc',
               },
             ]}
-            onRowClick={onRowClick}
-            />
+            onRowClick={onRowClick} />
         </Grid>
       </Grid>
     </div>
