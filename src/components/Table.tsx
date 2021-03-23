@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { DataGrid, GridColDef, GridSortModel } from '@material-ui/data-grid';
 import { makeStyles, Theme, createStyles, Paper } from '@material-ui/core';
 
@@ -11,15 +11,17 @@ interface Props {
 
 const Table = ({ columns, data, sortModel, onRowClick }: Props) => {
   const classes = useStyles();
+  const [sortModelCache, setSortModelCache] = useState<GridSortModel>();
 
   return (
     <Paper className={classes.tableContainer}>
       <DataGrid 
-        sortModel={sortModel} 
+        sortModel={ sortModelCache ? sortModelCache : sortModel } 
         rows={data} 
         columns={columns} 
         autoPageSize 
         onRowClick={e => { onRowClick(e.row) }}
+        onSortModelChange={e => { setSortModelCache(e.sortModel) }}
         />
     </Paper>
   );
