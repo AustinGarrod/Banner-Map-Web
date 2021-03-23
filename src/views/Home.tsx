@@ -7,10 +7,14 @@ import Fuse from 'fuse.js';
 // Import styles
 import '../styles/home.css';
 
+// Import assets
+import LoadingPoppy from '../assets/poppy_loader.svg'
+
 // Import components
 import Map from '../components/Map';
 import Table from '../components/Table';
 import SearchBar from '../components/SearchBar';
+import LoadingOverlay from '../components/Loading/LoadingOverlay';
 
 // Import configurations
 import STYLES from '../config/styles';
@@ -80,6 +84,7 @@ const Home = (props: RouteComponentProps) => {
   const [popupBanners, setPopupBanners] = useState<Banner[]>([]);
   const [shouldPopupDisplay, setShouldPopupDisplay] = useState<boolean>(false);
   const [shouldMapCenterOnMarkers, setShouldMapCenterOnMarkers] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // Handles changing of search text
   const onSearchChange = (searchText: string) => {
@@ -139,12 +144,18 @@ const Home = (props: RouteComponentProps) => {
       setBanners(data);
       setFilteredBanners(data);
       setShouldMapCenterOnMarkers(true);
+      setIsLoading(false);
     })
     .catch(error => { console.log("Failed to load banners", error) });
   }, [])
 
   return (
     <div className={classes.screenContainer}>
+      {
+        isLoading && <LoadingOverlay icon={LoadingPoppy} 
+                        text="Loading banners..." 
+                        subtext="This may take a moment" />
+      }
       <Grid container>
         <Grid className={classes.mapGridArea} item md={6} xs={12}>
           <Map 
