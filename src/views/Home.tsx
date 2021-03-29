@@ -208,7 +208,8 @@ const useStyles = makeStyles((theme: Theme) =>
       left: STYLES.spacing,
       bottom: STYLES.spacing,
       right: STYLES.spacing,
-      flexGrow: 1
+      flexGrow: 1,
+      minHeight: 550
     },
     mapGridArea: {
       [theme.breakpoints.down(STYLES.largeBreakpoint)]: {
@@ -224,12 +225,13 @@ const useStyles = makeStyles((theme: Theme) =>
       [theme.breakpoints.down(STYLES.largeBreakpoint)]: {
         paddingLeft: STYLES.spacing,
         paddingTop: 0,
-        height: "100%"
+        height: "100%",
+        minHeight: "100%"
       },
       [theme.breakpoints.down(STYLES.smallBreakpoint)]: {
         paddingTop: STYLES.spacing,
         paddingLeft: 0,
-        height: "65%"
+        height: "65%",
       },
     }
   })
