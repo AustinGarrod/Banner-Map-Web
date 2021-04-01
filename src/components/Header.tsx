@@ -10,7 +10,7 @@ const Header = () => {
       <Toolbar variant="dense">
         <Typography variant="h6" className={classes.title} noWrap>
           <Link to="/" className={classes.link}>
-            Honour Our Veterans Banner Map
+            Honour Our Veterans Banner Map - Uxbridge
           </Link>
         </Typography>
       </Toolbar>
