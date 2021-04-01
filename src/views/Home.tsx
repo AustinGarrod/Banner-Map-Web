@@ -161,9 +161,13 @@ const Home = (props: RouteComponentProps) => {
                         text="Loading banners..." 
                         subtext="This may take a moment" />
       }
-      <FeedbackDialog shouldDisplay={showBannerError}
-        title="Failed to load banners"
-        text={`Looks like we failed to load the data we need, sorry about that! \n Check back again later, hopefully we will have this fixed`} />
+
+      {
+        showBannerError && <FeedbackDialog shouldDisplay={showBannerError}
+          title="Failed to load banners"
+          text={`Looks like we failed to load the data we need, sorry about that! \n Check back again later, hopefully we will have this fixed`} />
+      }
+      
       <Grid container>
         <Grid className={classes.mapGridArea} item md={6} xs={12}>
           <Map 
